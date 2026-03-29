@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Providers from "@/app/providers";
 import "./globals.css";
 import "../styles/animation.css";
 
@@ -27,7 +28,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }
