@@ -9,6 +9,22 @@ export interface LoginResponse {
   profileImageUrl: string
 }
 
+export interface SignupCodeRequest {
+  email: string;
+}
+
+export interface VerifySignupCodeRequest {
+  email: string;
+  code: string;
+}
+
+export interface SignupRequest {
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  nickname: string;
+}
+
 export interface PasswordForgotCodeRequest {
   email: string;
 }

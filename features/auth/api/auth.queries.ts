@@ -2,14 +2,20 @@ import {
   login,
   resetForgottenPassword,
   sendPasswordForgotCode,
-  verifyPasswordForgotCode
+  sendSignupCode,
+  signup,
+  verifyPasswordForgotCode,
+  verifySignupCode
 } from "@/features/auth/api/auth.api";
 import {
   LoginRequest,
   LoginResponse,
   PasswordForgotCodeRequest,
   PasswordForgotResetRequest,
-  VerifyPasswordForgotCodeRequest
+  SignupCodeRequest,
+  SignupRequest,
+  VerifyPasswordForgotCodeRequest,
+  VerifySignupCodeRequest
 } from "@/features/auth/api/auth.type";
 import { ApiError } from "@/shared/api/global.type";
 import { authKeys } from "@/features/auth/api/auth.keys";
@@ -20,6 +26,30 @@ export const useLoginMutation = () => {
   return useAppMutation<LoginResponse, ApiError, LoginRequest>({
     mutationKey: authKeys.login(),
     mutationFn: login,
+  });
+};
+
+/** 회원가입 인증코드 전송 mutation */
+export const useSendSignupCodeMutation = () => {
+  return useAppMutation<null, ApiError, SignupCodeRequest>({
+    mutationKey: authKeys.signup.sendCode(),
+    mutationFn: sendSignupCode,
+  });
+};
+
+/** 회원가입 인증코드 확인 mutation */
+export const useVerifySignupCodeMutation = () => {
+  return useAppMutation<null, ApiError, VerifySignupCodeRequest>({
+    mutationKey: authKeys.signup.verifyCode(),
+    mutationFn: verifySignupCode,
+  });
+};
+
+/** 회원가입 mutation */
+export const useSignupMutation = () => {
+  return useAppMutation<null, ApiError, SignupRequest>({
+    mutationKey: authKeys.signup.register(),
+    mutationFn: signup,
   });
 };
 
