@@ -4,7 +4,7 @@ import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import z from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useOverlay } from "@/shared/system/overlay/OverlayContext";
 import {
@@ -46,7 +46,7 @@ export default function ForgotPasswordForm(){
   const [showPw, setShowPw] = useState(false);
   const [showPwConfirm, setShowPwConfirm] = useState(false);
 
-  const { register, handleSubmit, setValue, getValues, trigger, watch, formState: { errors, isValid, isSubmitting } } = useForm<PageType>({
+  const { register, control, handleSubmit, setValue, getValues, trigger, formState: { errors, isValid, isSubmitting } } = useForm<PageType>({
     resolver: zodResolver(pageSchema),
     mode: "onChange",
     defaultValues: {
@@ -60,10 +60,10 @@ export default function ForgotPasswordForm(){
   });
 
   // 인증번호 요청 여부
-  const isCodeSent = watch("isCodeSent");
+  const isCodeSent = useWatch({ control, name: "isCodeSent" });
 
   // 인증번호 확인 여부
-  const isCodeVerify = watch("isCodeVerify");
+  const isCodeVerify = useWatch({ control, name: "isCodeVerify" });
 
   /** 비밀번호 변경 인증코드 전송 */
   const handleSendCode = async () => {

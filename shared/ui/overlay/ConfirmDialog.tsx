@@ -25,7 +25,7 @@ export default function ConfirmDialog({
     <div className="fixed inset-0 z-100 flex items-center justify-center bg-zinc-950/30 px-5 backdrop-blur-[3px]">
       <div className={`w-full max-w-sm rounded-2xl bg-white shadow-[0_20px_60px_rgba(0,0,0,0.12)] ${isSimple ? "px-6 py-7" : "px-6 py-6"}`}>
         <div className="text-center">
-          <h2 className={`tracking-[-0.03em] ${isSimple ? "text-[15px] font-medium text-zinc-800" : "text-[17px] font-semibold text-zinc-900"}`}>
+          <h2 className={`tracking-[-0.03em] whitespace-pre-line ${isSimple ? "text-[15px] font-medium text-zinc-800" : "text-[17px] font-semibold text-zinc-900"}`}>
             {title}
           </h2>
 

@@ -11,7 +11,7 @@ import {
   useVerifySignupCodeMutation
 } from "@/features/auth/api/auth.queries";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const pageSchema = z.object({
@@ -49,7 +49,7 @@ export default function SignupForm(){
   const [showPw, setShowPw] = useState(false);
   const [showPwConfirm, setShowPwConfirm] = useState(false);
 
-  const { register, handleSubmit, setValue, getValues, trigger, watch, formState: { errors, isValid, isSubmitting } } = useForm<PageType>({
+  const { register, control, handleSubmit, setValue, getValues, trigger, formState: { errors, isValid, isSubmitting } } = useForm<PageType>({
     resolver: zodResolver(pageSchema),
     mode: "onChange",
     defaultValues: {
@@ -64,10 +64,10 @@ export default function SignupForm(){
   });
 
   // 인증번호 요청 여부
-  const isCodeSent = watch("isCodeSent");
+  const isCodeSent = useWatch({ control, name: "isCodeSent" });
 
   // 인증번호 확인 여부
-  const isCodeVerify = watch("isCodeVerify");
+  const isCodeVerify = useWatch({ control, name: "isCodeVerify" });
 
   /** 회원가입 인증코드 전송 */
   const handleSendCode = async () => {

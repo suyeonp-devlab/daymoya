@@ -2,6 +2,7 @@ import AuthHeader from "@/features/auth/components/AuthHeader";
 import SignupForm from "@/features/auth/components/SignupForm";
 
 export default function SignupPage() {
+
   return (
     <div className="min-h-dvh bg-white px-4 py-8">
       <div className="mx-auto w-full max-w-sm pt-10">

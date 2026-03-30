@@ -1,32 +1,23 @@
-import {
-  LoginRequest,
-  LoginResponse,
-  PasswordForgotCodeRequest,
-  PasswordForgotResetRequest,
-  SignupCodeRequest,
-  SignupRequest,
-  VerifyPasswordForgotCodeRequest,
-  VerifySignupCodeRequest
-} from "@/features/auth/api/auth.type";
+import * as AuthType from "@/features/auth/api/auth.type";
 import { request, requestOrThrow } from "@/shared/api/axios";
 
 /** 로그인 */
-export const login = (data: LoginRequest): Promise<LoginResponse> => {
-  return requestOrThrow<LoginResponse>({ method: "POST", url: "/auth/login", data });
+export const login = (data: AuthType.LoginRequest): Promise<AuthType.LoginResponse> => {
+  return requestOrThrow<AuthType.LoginResponse>({ method: "POST", url: "/auth/login", data });
 }
 
 /** 회원가입 인증코드 전송 */
-export const sendSignupCode = async (data: SignupCodeRequest): Promise<null> => {
+export const sendSignupCode = async (data: AuthType.SignupCodeRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/signup/code", data })
 };
 
 /** 회원가입 인증코드 확인 */
-export const verifySignupCode = async (data: VerifySignupCodeRequest): Promise<null> => {
+export const verifySignupCode = async (data: AuthType.VerifySignupCodeRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/signup/code/verify", data })
 };
 
 /** 회원가입 */
-export const signup = async (data: SignupRequest): Promise<null> => {
+export const signup = async (data: AuthType.SignupRequest): Promise<null> => {
 
   const formData = new FormData();
   formData.append("email", data.email);
@@ -38,16 +29,16 @@ export const signup = async (data: SignupRequest): Promise<null> => {
 };
 
 /** 비밀번호 찾기 인증코드 전송 */
-export const sendPasswordForgotCode = async (data: PasswordForgotCodeRequest): Promise<null> => {
+export const sendPasswordForgotCode = async (data: AuthType.PasswordForgotCodeRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/password/forgot/code", data })
 };
 
 /** 비밀번호 찾기 인증코드 확인 */
-export const verifyPasswordForgotCode = async (data: VerifyPasswordForgotCodeRequest): Promise<null> => {
+export const verifyPasswordForgotCode = async (data: AuthType.VerifyPasswordForgotCodeRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/password/forgot/code/verify", data })
 };
 
 /** 비밀번호 변경 */
-export const resetForgottenPassword = async (data: PasswordForgotResetRequest): Promise<null> => {
+export const resetForgottenPassword = async (data: AuthType.PasswordForgotResetRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/password/forgot/reset", data })
 };
