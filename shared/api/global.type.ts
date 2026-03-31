@@ -16,6 +16,7 @@ export interface ApiError {
 
 export interface ApiRequestMeta {
   timeout?: number;
+  skipAuthRefresh?: boolean;
 }
 
 declare module "axios" {
@@ -25,6 +26,7 @@ declare module "axios" {
 
   export interface InternalAxiosRequestConfig {
     meta?: ApiRequestMeta;
+    _retry?: boolean;
   }
 }
 

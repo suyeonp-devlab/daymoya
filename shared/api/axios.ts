@@ -1,11 +1,14 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { ApiError, ApiResponse } from "@/shared/api/global.type";
+import { refreshAccessToken } from "@/features/auth/api/auth.api";
 
 export const api = axios.create({
   baseURL: "/api",
   withCredentials: true,
   timeout: 5000,
 });
+
+let refreshPromise: Promise<null> | null = null;
 
 /** 요청 인터셉터 */
 api.interceptors.request.use(
@@ -26,7 +29,47 @@ api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
     return response;
   },
-  (error: AxiosError<ApiResponse<null>>): Promise<never> => {
+  async (error: AxiosError<ApiResponse<null>>): Promise<AxiosResponse | never> => {
+
+    const originalRequest = error.config as InternalAxiosRequestConfig | undefined;
+    const status = error.response?.status;
+
+    // refresh 시도 조건
+    // 1) 401 에러일 것
+    // 2) 기존 요청 정보가 존재할 것
+    // 3) 아직 refresh를 시도하지 않은 요청일 것
+    // 4) refresh 제외 요청이 아닐 것
+    const shouldRefresh =
+      status === 401 &&
+      !!originalRequest &&
+      !originalRequest._retry &&
+      !originalRequest.meta?.skipAuthRefresh;
+
+    // access token 재발급 후 기존 요청 재시도
+    if (shouldRefresh) {
+      originalRequest._retry = true;
+
+      try {
+
+        // refresh 중복 호출 방지
+        if (!refreshPromise) {
+          refreshPromise = refreshAccessToken().finally(() => {
+            refreshPromise = null;
+          });
+        }
+
+        await refreshPromise;
+        return api.request(originalRequest);
+      } catch {
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+
+        // refresh 실패는 세션 만료로 간주하고, 공통 에러 처리로 넘기지 않음
+        return new Promise<never>(() => {});
+      }
+    }
+
     const apiError: ApiError = {
       status: error.response?.status,
       code: error.response?.data?.code ?? "HTTP_ERROR",

@@ -46,5 +46,10 @@ export const resetForgottenPassword = async (data: AuthType.PasswordForgotResetR
 
 /** 현재 로그인 사용자 정보 조회 */
 export const getMe = async (): Promise<MeResponse> => {
-  return await requestOrThrow<MeResponse>({ method: "GET", url: "/auth/me" });
+  return requestOrThrow<MeResponse>({ method: "GET", url: "/auth/me" });
+};
+
+/** access token 재발급 */
+export const refreshAccessToken = async (): Promise<null> => {
+  return request<null>({ url: "/auth/public/refresh/token", method: "POST", meta: { skipAuthRefresh: true } });
 };
