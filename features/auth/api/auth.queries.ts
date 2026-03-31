@@ -3,10 +3,13 @@ import * as AuthType from "@/features/auth/api/auth.type";
 import { ApiError } from "@/shared/api/global.type";
 import { authKeys } from "@/features/auth/api/auth.keys";
 import { useAppMutation } from "@/shared/system/query/useAppMutation";
+import { useAppQuery } from "@/shared/system/query/useAppQuery";
+import { MeResponse } from "@/features/auth/api/auth.type";
+import { QueryClient } from "@tanstack/react-query";
 
 /** 로그인 mutation */
 export const useLoginMutation = () => {
-  return useAppMutation<AuthType.LoginResponse, ApiError, AuthType.LoginRequest>({
+  return useAppMutation<null, ApiError, AuthType.LoginRequest>({
     mutationKey: authKeys.login(),
     mutationFn: AuthApi.login,
     meta: { showError: false }
@@ -58,5 +61,23 @@ export const useResetForgottenPasswordMutation = () => {
   return useAppMutation<null, ApiError, AuthType.PasswordForgotResetRequest>({
     mutationKey: authKeys.forgotPassword.resetPassword(),
     mutationFn: AuthApi.resetForgottenPassword,
+  });
+};
+
+/** 현재 로그인 사용자 정보 조회 query */
+export const useMeQuery = () => {
+  return useAppQuery<MeResponse, ApiError>({
+    queryKey: authKeys.me(),
+    queryFn: AuthApi.getMe,
+    retry: 0
+  });
+};
+
+/** 현재 로그인 사용자 정보 조회 및 캐시 저장 */
+export const fetchMe = async (queryClient: QueryClient): Promise<MeResponse> => {
+  return queryClient.fetchQuery({
+    queryKey: authKeys.me(),
+    queryFn: AuthApi.getMe,
+    retry: 0,
   });
 };

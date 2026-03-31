@@ -33,9 +33,8 @@ export const useAppMutation = <
     ...restOptions,
     meta,
     onMutate: async (variables, context) => {
-      if (shouldShowLoading) {
-        overlayService.showLoading();
-      }
+
+      if (shouldShowLoading) overlayService.showLoading();
 
       if (!onMutate) {
         return undefined as TOnMutateResult;
@@ -44,17 +43,11 @@ export const useAppMutation = <
       return onMutate(variables, context);
     },
     onError: (error, variables, onMutateResult, context) => {
-      if (shouldShowError) {
-        overlayService.alert({ title: getErrorMessage(error) });
-      }
-
+      if (shouldShowError) overlayService.alert({ title: getErrorMessage(error) });
       onError?.(error, variables, onMutateResult, context);
     },
     onSettled: (data, error, variables, onMutateResult, context) => {
-      if (shouldShowLoading) {
-        overlayService.hideLoading();
-      }
-
+      if (shouldShowLoading) overlayService.hideLoading();
       onSettled?.(data, error, variables, onMutateResult, context);
     },
   });

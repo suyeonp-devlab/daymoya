@@ -1,6 +1,7 @@
 export const authKeys = {
   all: ["auth"] as const,
   login: () => [...authKeys.all, "login"] as const,
+  me: () => [...authKeys.all, "me"] as const,
   signup: {
     all: () => [...authKeys.all, "signup"] as const,
     sendCode: () => [...authKeys.signup.all(), "sendCode"] as const,

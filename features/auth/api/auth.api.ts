@@ -1,9 +1,10 @@
 import * as AuthType from "@/features/auth/api/auth.type";
 import { request, requestOrThrow } from "@/shared/api/axios";
+import { MeResponse } from "@/features/auth/api/auth.type";
 
 /** 로그인 */
-export const login = (data: AuthType.LoginRequest): Promise<AuthType.LoginResponse> => {
-  return requestOrThrow<AuthType.LoginResponse>({ method: "POST", url: "/auth/public/login", data });
+export const login = (data: AuthType.LoginRequest): Promise<null> => {
+  return request<null>({ method: "POST", url: "/auth/public/login", data });
 }
 
 /** 회원가입 인증코드 전송 */
@@ -41,4 +42,9 @@ export const verifyPasswordForgotCode = async (data: AuthType.VerifyPasswordForg
 /** 비밀번호 변경 */
 export const resetForgottenPassword = async (data: AuthType.PasswordForgotResetRequest): Promise<null> => {
   return request<null>({ method: "POST", url: "/auth/public/password/forgot/reset", data })
+};
+
+/** 현재 로그인 사용자 정보 조회 */
+export const getMe = async (): Promise<MeResponse> => {
+  return await requestOrThrow<MeResponse>({ method: "GET", url: "/auth/me" });
 };

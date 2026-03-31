@@ -39,3 +39,10 @@ export interface PasswordForgotResetRequest {
   password: string;
   passwordConfirm: string;
 }
+
+export interface MeResponse {
+  memberId: number;
+  email: string;
+  nickname: string;
+  profileImageUrl: string;
+}

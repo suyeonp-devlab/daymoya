@@ -53,6 +53,7 @@ export const request = async <T>(config: AxiosRequestConfig): Promise<T | null> 
  * data가 null인 경우 비정상 응답으로 간주하고 에러를 발생시킨다.
  */
 export const requestOrThrow = async <T>(config: AxiosRequestConfig): Promise<T> => {
+
   const response = await api.request<ApiResponse<T>>(config);
 
   if (response.data.data == null) {

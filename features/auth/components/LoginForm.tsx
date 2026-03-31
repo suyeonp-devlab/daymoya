@@ -5,13 +5,14 @@ import Link from "next/link";
 import z from "zod";
 import { useRouter } from "next/navigation";
 import { useOverlay } from "@/shared/system/overlay/OverlayContext";
-import { useLoginMutation } from "@/features/auth/api/auth.queries";
+import { fetchMe, useLoginMutation } from "@/features/auth/api/auth.queries";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { appLocalStorage } from "@/shared/utils/storage";
 import { ApiError } from "@/shared/api/global.type";
 import { getErrorMessage } from "@/shared/utils/string";
+import { useQueryClient } from "@tanstack/react-query";
 
 const SAVED_EMAIL_KEY = "auth.savedEmail";
 
@@ -28,6 +29,8 @@ type PageType = z.infer<typeof pageSchema>;
 export default function LoginForm(){
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { alert } = useOverlay();
 
   const { mutateAsync: login } = useLoginMutation();
@@ -58,6 +61,9 @@ export default function LoginForm(){
     try{
       await login({ email: data.email, password: data.password });
       if (isRememberEmail) appLocalStorage.set(SAVED_EMAIL_KEY, data.email);
+
+      // 로그인 직후 me 캐시 선조회 (초기 로딩 방지)
+      await fetchMe(queryClient);
       router.replace("/app");
     }catch(error){
       const apiError = error as ApiError;
