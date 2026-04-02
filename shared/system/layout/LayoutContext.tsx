@@ -3,7 +3,7 @@
 import { createContext, PropsWithChildren, useContext, useMemo, useState } from "react";
 
 export type HeaderVariant = "default" | "detail";
-export type NavIcon = "home" | "schedule" | "group" | "mypage";
+export type NavIcon = "home" | "personal" | "group" | "mypage";
 
 type LayoutContextValue = {
   headerTitle: string;

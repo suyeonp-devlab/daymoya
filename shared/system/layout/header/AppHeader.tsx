@@ -16,17 +16,15 @@ export default function AppHeader() {
           {headerTitle}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Link
-            href="/app/alarm"
-            aria-label="alarm"
-            className="relative flex h-6 w-6 items-center justify-center"
-          >
-            <Bell size={20} className="text-zinc-800" />
-            {/*TODO 신규알림 존재 시 표출*/}
-            <span className="absolute top-px -right-0.5 h-1 w-1 rounded-full bg-rose-500" />
-          </Link>
-        </div>
+        <Link
+          href="/app/alarm"
+          aria-label="alarm"
+          className="relative flex h-6 w-6 items-center justify-center"
+        >
+          <Bell size={20} className="text-zinc-800" />
+          {/*TODO 신규알림 존재 시 표출*/}
+          <span className="absolute top-px -right-0.5 h-1 w-1 rounded-full bg-rose-500" />
+        </Link>
       </div>
     </header>
   );
