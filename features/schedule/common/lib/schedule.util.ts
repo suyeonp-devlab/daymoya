@@ -1,6 +1,6 @@
-/** space color 맵핑 */
 import { SpaceColor } from "@/features/schedule/common/api/schedule.type";
 
+/** space color 맵핑 */
 const SPACE_COLOR_CLASS: Record<SpaceColor, string> = {
   SKY: "bg-sky-400",
   MINT: "bg-emerald-400",

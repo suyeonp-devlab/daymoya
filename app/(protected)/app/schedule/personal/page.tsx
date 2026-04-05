@@ -5,7 +5,7 @@ export default function PersonalPage() {
 
   return (
     <>
-      <LayoutConfig navIcon="personal" />
+      <LayoutConfig title="내 일정" navIcon="personal" />
       <PersonalClientPage />
     </>
   );

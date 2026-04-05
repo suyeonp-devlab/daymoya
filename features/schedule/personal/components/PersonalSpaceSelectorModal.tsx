@@ -42,11 +42,11 @@ export default function PersonalSpaceSelectorModal({
       />
 
       <div className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none">
-        <div className="relative w-full max-w-sm pointer-events-auto rounded-[28px] bg-white px-5 pb-5 pt-7 shadow-[0_24px_64px_rgba(15,23,42,0.18)]">
+        <div className="relative w-full max-w-sm pointer-events-auto rounded-2xl bg-white px-5 pb-5 pt-7 shadow-[0_24px_64px_rgba(15,23,42,0.18)]">
           {/*Header*/}
           <div className="flex items-center justify-between px-1">
             <h3 className="text-[17px] font-semibold tracking-[-0.03em] text-zinc-900">
-              일정 공간
+              내 일정 공간
             </h3>
 
             <button
@@ -74,18 +74,22 @@ export default function PersonalSpaceSelectorModal({
                   <button
                     key={s.scheduleSpaceId}
                     type="button"
-                    onClick={() => {onChange(s.scheduleSpaceId); onClose();}}
-                    className={`flex w-full items-start gap-3 rounded-md border px-4 py-3 text-left transition ${selected ? "border-violet-400 bg-violet-100" : "border-zinc-200 bg-zinc-50"}`}
+                    onClick={() => {
+                      onChange(s.scheduleSpaceId);
+                      onClose();
+                    }}
+                    className={`relative flex w-full items-start gap-3 rounded-md border px-4 py-3 text-left transition overflow-hidden ${selected ? "border-violet-300 bg-violet-100" : "border-zinc-200 bg-zinc-50"}`}
                   >
-                    <span className={`mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full ${getSpaceBgColor(s.spaceColor ?? "") ?? "bg-zinc-300"}`} />
 
-                    <div className="min-w-0 flex-1">
+                    <span className={`absolute left-0 top-0 bottom-0 w-2 ${getSpaceBgColor(s.spaceColor ?? "") ?? "bg-zinc-300"}`} />
+
+                    <div className="min-w-0 flex-1 pl-2">
                       <p className="truncate text-sm font-semibold text-zinc-900">
                         {s.name}
                       </p>
 
                       {s.description && (
-                        <p className="mt-1 truncate text-sm leading-5 text-zinc-500">
+                        <p className="mt-1 line-clamp-2 text-sm leading-5 text-zinc-500 break-all">
                           {s.description}
                         </p>
                       )}

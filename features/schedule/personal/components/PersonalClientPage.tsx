@@ -41,35 +41,39 @@ export default function PersonalClientPage(){
   };
 
   return (
-    <>
-      <div className="text-zinc-900">
-        <section className="mt-1 space-y-4">
-          {/*현재 스케줄 공간*/}
-          <PersonalSpaceSelector
-            selected={spaceData?.find(s => s.scheduleSpaceId === pageForm.scheduleSpaceId) ?? null}
-            onClick={() => setIsSpaceSheetOpen(true)}
-          />
-          {/*스케줄 상태 필터*/}
-          <ScheduleStatusFilter
-            filters={statusData?.codes ?? []}
-            value={pageForm.statusCode}
-            onChange={statusCode => setPageForm((prev) => ({...prev, statusCode}))}
-          />
-        </section>
-        <MonthlyCalendar/>
-        <PersonalScheduleSection/>
-        <AddScheduleFab/>
-
-        {/*스케줄 공간 선택 시트*/}
-        <PersonalSpaceSelectorModal
-          open={isSpaceSheetOpen}
-          spaces={spaceData ?? []}
-          value={pageForm.scheduleSpaceId}
-          onClose={() => setIsSpaceSheetOpen(false)}
-          onChange={changeScheduleSpace}
-          onManage={() => router.push("/app/schedule/personal/space")}
+    <div className="text-zinc-900">
+      <section className="-mt-1 space-y-4">
+        {/*현재 스케줄 공간*/}
+        <PersonalSpaceSelector
+          selected={spaceData?.find(s => s.scheduleSpaceId === pageForm.scheduleSpaceId) ?? null}
+          onClick={() => setIsSpaceSheetOpen(true)}
         />
-      </div>
-    </>
+        {/*스케줄 상태 필터*/}
+        <ScheduleStatusFilter
+          filters={statusData?.codes ?? []}
+          value={pageForm.statusCode}
+          onChange={statusCode => setPageForm((prev) => ({...prev, statusCode}))}
+        />
+      </section>
+
+      {/*스케줄 달력*/}
+      <MonthlyCalendar/>
+
+      {/*선택날짜 스케줄 목록*/}
+      <PersonalScheduleSection/>
+
+      {/*스케줄 등록 Fab*/}
+      <AddScheduleFab onClick={() => router.push("/app/schedule/personal/create")}/>
+
+      {/*스케줄 공간 선택 모달*/}
+      <PersonalSpaceSelectorModal
+        open={isSpaceSheetOpen}
+        spaces={spaceData ?? []}
+        value={pageForm.scheduleSpaceId}
+        onClose={() => setIsSpaceSheetOpen(false)}
+        onChange={changeScheduleSpace}
+        onManage={() => router.push("/app/schedule/personal/space")}
+      />
+    </div>
   );
 }
