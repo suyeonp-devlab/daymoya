@@ -1,6 +1,5 @@
 import * as AuthType from "@/features/auth/api/auth.type";
 import { request, requestOrThrow } from "@/shared/api/axios";
-import { MeResponse } from "@/features/auth/api/auth.type";
 
 /** 로그인 */
 export const login = (data: AuthType.LoginRequest): Promise<null> => {
@@ -45,8 +44,8 @@ export const resetForgottenPassword = async (data: AuthType.PasswordForgotResetR
 };
 
 /** 현재 로그인 사용자 정보 조회 */
-export const getMe = async (): Promise<MeResponse> => {
-  return requestOrThrow<MeResponse>({ method: "GET", url: "/auth/me" });
+export const getMe = async (): Promise<AuthType.MeResponse> => {
+  return requestOrThrow<AuthType.MeResponse>({ method: "GET", url: "/auth/me" });
 };
 
 /** access token 재발급 */

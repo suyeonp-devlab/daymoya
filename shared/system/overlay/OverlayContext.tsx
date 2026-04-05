@@ -1,10 +1,11 @@
 "use client";
 
-import { createContext, PropsWithChildren, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from "react";
 import { AlertOptions, AlertState, ConfirmOptions, ConfirmState, LoadingState } from "@/shared/system/overlay/overlay.type";
 import AlertDialog from "@/shared/ui/overlay/AlertDialog";
 import ConfirmDialog from "@/shared/ui/overlay/ConfirmDialog";
 import LoadingOverlay from "@/shared/ui/overlay/LoadingOverlay";
+import { useBodyScrollLock } from "@/shared/system/overlay/useBodyScrollLock";
 
 type OverlayContextValue = {
   alert: (options: AlertOptions | string) => Promise<void>;
@@ -38,32 +39,7 @@ export function OverlayProvider({ children }: PropsWithChildren) {
   const isAnyOverlayOpen =
     alertState.isOpen || confirmState.isOpen || loadingState.count > 0;
 
-  useEffect(() => {
-    if (!isAnyOverlayOpen) return;
-
-    const scrollY = window.scrollY;
-
-    const originalStyle = {
-      overflow: document.body.style.overflow,
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-    };
-
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-
-    return () => {
-      document.body.style.overflow = originalStyle.overflow;
-      document.body.style.position = originalStyle.position;
-      document.body.style.top = originalStyle.top;
-      document.body.style.width = originalStyle.width;
-
-      window.scrollTo(0, scrollY);
-    };
-  }, [isAnyOverlayOpen]);
+  useBodyScrollLock(isAnyOverlayOpen);
 
   const alert = useCallback((input: AlertOptions | string) => {
     const options: AlertOptions = typeof input === "string" ? { title: input } : input;

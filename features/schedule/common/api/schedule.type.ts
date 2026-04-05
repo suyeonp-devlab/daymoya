@@ -1,0 +1,1 @@
+export type SpaceColor = "SKY" | "MINT" | "CORAL" | "AMBER" | "ROSE";

@@ -3,12 +3,6 @@ export interface LoginRequest {
   password: string
 }
 
-export interface LoginResponse {
-  memberId: number
-  nickname: string
-  profileImageUrl: string
-}
-
 export interface SignupCodeRequest {
   email: string;
 }

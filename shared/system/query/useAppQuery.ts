@@ -1,7 +1,7 @@
 import { DefaultError, QueryKey, UseQueryOptions, UseQueryResult, useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { overlayService } from "@/shared/system/overlay/overlay.service";
-import { ReactQueryMeta } from "@/shared/api/global.type";
+import { ApiError, ReactQueryMeta } from "@/shared/api/global.type";
 import { getErrorMessage } from "@/shared/utils/string";
 
 type UseAppQueryOptions<
@@ -12,6 +12,12 @@ type UseAppQueryOptions<
 > = Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, "meta"> & {
   meta?: ReactQueryMeta;
 };
+
+/** 공통 query 훅에서 외부로 노출할 옵션 타입 */
+export type AppQueryHookOptions<TData> = Omit<
+  UseQueryOptions<TData, ApiError>,
+  "queryKey" | "queryFn"
+>;
 
 /** 공통 loading 및 error 처리가 적용된 query 래퍼 훅 */
 export const useAppQuery = <
@@ -39,6 +45,8 @@ export const useAppQuery = <
 
     if (queryResult.isLoading) overlayService.showLoading();
     else overlayService.hideLoading();
+
+    return () => { overlayService.hideLoading(); };
 
   }, [shouldShowLoading, queryResult.isLoading]);
 
